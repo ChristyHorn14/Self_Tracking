@@ -1,18 +1,10 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr 24 11:40:28 2020
+# Created by Chris Hornung 4.25.2020
 
-@author: chrishornung
-"""
-
-#RescueTimeReadProcess.py
+#RescueTimeReadTracking.py
 
 # program to read data from Rescue Time Data in Google sheets exported as CSV
-# process the data and convert to total minutes/day
+# process the data and convert to total minutes/day, at Day of Week as Day_week
 # write the new data into a new file
-# Make sure CSV file is located in RescueTime Folder within Tracking Folder
-# program works as long as an input is not none or in format 1m 52s
 
 import csv
 import datetime
@@ -21,12 +13,22 @@ def RescueTimeConvert(string):
     #convert string to standard format
     #condition for if string is in format ex. 5h 5m output 305
     if string.__contains__('h') == True:
-        Fulltime = str(datetime.datetime.strptime(string, "%Hh %Mm"))
-        time = Fulltime[11:16]
-        hr = int(time[0:2])
-        mins = int(time[3:5])
-        total_minutes = hr * 60 + mins
-        return(total_minutes)
+        #check to make sure minutes are not missing
+        if string.__contains__('m') == True:
+            Fulltime = str(datetime.datetime.strptime(string, "%Hh %Mm"))
+            time = Fulltime[11:16]
+            hr = int(time[0:2])
+            mins = int(time[3:5])
+            total_minutes = hr * 60 + mins
+            return(total_minutes)
+        #return just hour if minutes are missing
+        else:
+            Fulltime = str(datetime.datetime.strptime(string, "%Hh"))
+            time = Fulltime[11:16]
+            hr = int(time[0:2])
+            total_minutes = hr * 60
+            return(total_minutes)
+
     #conditions if string contains seconds (5m 5s or 5s)
     elif string.__contains__('s') == True:
             #condition if string is in format 5m 5s
@@ -39,12 +41,21 @@ def RescueTimeConvert(string):
     #condition if string is in format 5s
         else:
             return 0
-    # condition if string is "no time"
     else:
-        return 0
+        if string.__contains__('m') == True:
+            #condition if no time is entered
+            if string.__contains__('i') == True:
+                return 0
+            #condition is (n)m is entered
+            else:  
+                Fulltime = str(datetime.datetime.strptime(string, "%Mm"))
+                time = Fulltime[11:16]
+                mins = int(time[3:5])
+                return mins
+
     
     
-#fucntion to allow day f week to be written in new sheet
+#fucntion to allow day of week to be written in new sheet
 # ex 24-Apr-20 outputs Friday
 def MedConvertDayWeek(string):
     #convert string to standard format
