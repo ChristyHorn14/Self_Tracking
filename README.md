@@ -9,4 +9,6 @@ Walkthrough for RescueTimeTracking.py:
 
 https://medium.com/@chrishornung14/using-iftt-rescuetime-google-sheets-excel-and-python-to-track-activity-4e321cc65b20
 
+Walkthrough for manualtimetracking.ipynb
+https://medium.com/@chrishornung14/using-google-forms-and-jupyter-notebooks-to-track-time-in-medical-school-d297f47d424d
 I will continue to post walkthrough's as the project progresses.
